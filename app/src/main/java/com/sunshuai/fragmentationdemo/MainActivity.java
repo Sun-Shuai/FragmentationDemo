@@ -1,6 +1,5 @@
 package com.sunshuai.fragmentationdemo;
 
-import android.os.Bundle;
 import android.widget.Toast;
 
 import com.sunshuai.fragmentationdemo.base.BaseActivity;
