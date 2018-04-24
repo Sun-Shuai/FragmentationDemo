@@ -1,11 +1,14 @@
 package com.sunshuai.fragmentationdemo.base;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import me.yokeyword.fragmentation.ExtraTransaction;
 import me.yokeyword.fragmentation.ISupportActivity;
 import me.yokeyword.fragmentation.ISupportFragment;
@@ -14,7 +17,9 @@ import me.yokeyword.fragmentation.SupportHelper;
 import me.yokeyword.fragmentation.anim.FragmentAnimator;
 
 
-public class BaseActivity extends AppCompatActivity implements ISupportActivity {
+public abstract class BaseActivity extends AppCompatActivity implements ISupportActivity {
+
+    protected Unbinder mBinder;
     final SupportActivityDelegate mDelegate = new SupportActivityDelegate(this);
 
     @Override
@@ -30,19 +35,45 @@ public class BaseActivity extends AppCompatActivity implements ISupportActivity 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(getLayoutId());
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         mDelegate.onCreate(savedInstanceState);
+
+        initVariable();
+        initView();
+        loadData();
     }
+
+    @Override
+    protected void onDestroy() {
+        mBinder.unbind();
+        mDelegate.onDestroy();
+        super.onDestroy();
+    }
+
+    @Override
+    public void setContentView(int layoutResId) {
+        super.setContentView(layoutResId);
+        mBinder = ButterKnife.bind(this);
+    }
+
+    protected void initVariable() {
+    }
+
+
+    protected void initView() {
+    }
+
+
+    protected void loadData() {
+    }
+
+    protected abstract int getLayoutId();
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         mDelegate.onPostCreate(savedInstanceState);
-    }
-
-    @Override
-    protected void onDestroy() {
-        mDelegate.onDestroy();
-        super.onDestroy();
     }
 
     @Override
