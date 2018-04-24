@@ -13,10 +13,8 @@ public class MainActivity extends BaseActivity {
     private long TOUCH_TIME = 0;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+    protected void initView() {
+        super.initView();
         BaseFragment fragment = findFragment(HomeFragment.class);
         if (fragment == null) {
             loadRootFragment(R.id.fl_container, HomeFragment.newInstance());
